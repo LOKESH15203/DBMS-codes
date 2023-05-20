@@ -1,0 +1,90 @@
+mysql> create database Practice1;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> show databases
+    -> ;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| Practice1          |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use Practice1;
+Database changed
+
+mysql> create table instructor(Id int, Name varchar(20), Salary int);
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> desc instructor;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| Id     | int         | YES  |     | NULL    |       |
+| Name   | varchar(20) | YES  |     | NULL    |       |
+| Salary | int         | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.02 sec)
+
+mysql> insert into instructor values (1, "ABC", 500000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from instructor;
++------+------+--------+
+| Id   | Name | Salary |
++------+------+--------+
+|    1 | ABC  | 500000 |
++------+------+--------+
+1 row in set (0.00 sec)
+
+mysql> insert into instructor values (2, "EFG", 500000);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into instructor values (4, "HIJ", 500000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into instructor values (3, "KLM", 500000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into instructor values (5, "NOP", 1000000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> Select * from instructor;
++------+------+---------+
+| Id   | Name | Salary  |
++------+------+---------+
+|    1 | ABC  |  500000 |
+|    2 | EFG  |  500000 |
+|    4 | HIJ  |  500000 |
+|    3 | KLM  |  500000 |
+|    5 | NOP  | 1000000 |
++------+------+---------+
+5 rows in set (0.00 sec)
+
+// FUNCTION ################################################### 
+
+mysql> create procedure count_tea(dept varchar(5))
+    -> begin 
+    -> select count(dept_name) from teacher where dept = dept_name;
+    -> end; //
+Query OK, 0 rows affected (0.05 sec)
+
+
+// FUNCTION ################################################### 
+
+mysql> create function comp_sala(id int)
+    -> returns int
+    -> deterministic 
+    -> begin 
+    -> select Salary into @Salary from teacher where Id = id;
+    -> if @Salary > 300000 then
+    -> return "High";
+    -> else
+    -> return "Low";
+    -> end if;
+    -> end; //
+Query OK, 0 rows affected (0.00 sec)
