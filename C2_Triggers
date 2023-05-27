@@ -1,0 +1,103 @@
+mysql> create database Trigger_Ass;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use Trigger_Ass;
+Database changed
+mysql> show tables;
+Empty set (0.00 sec)
+
+mysql> create table stud(s_id int, s_name varchar(10), bname varchar(10));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> insert into stud values (46, "Ram", "Epic");
+Query OK, 1 row affected (0.01 sec)
+mysql> select * from stud;
++------+--------+-------+
+| s_id | s_name | bname |
++------+--------+-------+
+|   46 | Ram    | Epic  |
++------+--------+-------+
+1 row in set (0.00 sec)
+ create table issued(s_id int, bname varchar(10));
+Query OK, 0 rows affected (0.01 sec)
+
+// INSERT TRIGGER ########################################################################## 
+
+mysql> delimiter // 
+mysql> Create trigger tri_issue_ins
+    -> before insert 
+    -> on stud
+    -> for each row 
+    -> begin
+    -> insert into issued values(new.s_id, new.bname);
+    -> end; //
+Query OK, 0 rows affected (0.01 sec)
+
+insert into stud values(63, "Lokesh", "Life");
+    -> //
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from issued;
+    -> //
++------+--------+
+| s_id | bname  |
++------+--------+
+|   63 | Life   |
++------+--------+
+1 row in set (0.00 sec)
+
+// DELETE TRIGGER ########################################################################## 
+
+mysql> delimiter // 
+mysql> Create trigger tri_issue_dele
+    -> after delete
+    -> on stud
+    -> for each row 
+    -> begin
+    -> delete from issued where s_id = old.s_id;
+    -> end; //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> delete from stud where s_id = 63;
+    -> //
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from issued;
+    -> //
+Empty set (0.00 sec)
+
+// UPDATE TRIGGER ########################################################################## 
+
+mysql> Create trigger tri_issue_update
+    -> after update 
+    -> on stud
+    -> for each row 
+    -> begin
+    -> update issued 
+    -> set s_id=new.s_id where s_id = old.s_id;
+    -> end; //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select * from issued;
+    -> //
++------+--------+
+| s_id | bname  |
++------+--------+
+|   63 | Lokesh |
++------+--------+
+1 row in set (0.00 sec)
+
+mysql> update stud set s_id = 2 where s_id = 63;
+    -> //
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from issued;
+    -> //
++------+--------+
+| s_id | bname  |
++------+--------+
+|    2 | Lokesh |
++------+--------+
+1 row in set (0.00 sec)
+
